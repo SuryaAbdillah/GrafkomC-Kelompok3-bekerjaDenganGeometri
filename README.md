@@ -1,6 +1,6 @@
 # Materi Three JS: Bermain dengan Geometri
 
-## Grafika Komputer C / Kelompok 3
+## Grafika Komputer C / Kelompok 4
 ### Dosen Pengampu: Siska Arifiani, S.Kom., M.Kom.
 
 ### Anggota Kelompok:
