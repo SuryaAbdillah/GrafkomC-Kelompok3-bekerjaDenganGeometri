@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCTAHEDRON</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        canvas {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+    <!-- LIBRARY THREE JS -->
+    <script src="three.js"></script>
+</head>
+<body>
+    <script>
+        // SCENE & BACKGROUND
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x8FBCD4);
+
+        // GEOMETRI
+        const radius = 5;
+        const detail = 0;
+
+         const geometry = new THREE.OctahedronGeometry( radius, detail);
+         const material = new THREE.MeshBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
+         const mesh = new THREE.Mesh( geometry, material );
+         scene.add( mesh );
+
+        // WIREFRAME
+        const wireframe = new THREE.WireframeGeometry( geometry );
+        const line = new THREE.LineSegments( wireframe );
+        line.material.depthTest = false;
+        line.material.opacity = 0.25;
+        line.material.transparent = true;
+        scene.add( line );
+        
+        //  CAMERA
+        const fieldOfView = 5; 
+        const aspectRatio = window.innerWidth / window.innerHeight;
+        const nearPlane = 0.1;
+        const farPlane = 1000;
+        const camera = new THREE.PerspectiveCamera(fieldOfView, aspectRatio, nearPlane, farPlane);
+
+        camera.position.z = 100;
+        camera.position.y = -0.1;
+
+        //  RENDER
+        const renderer = new THREE.WebGLRenderer({
+            antialias: true
+        });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+        requestAnimationFrame(animate);
+
+        function animate() {
+            requestAnimationFrame(animate);
+            mesh.rotation.x += 0.02;
+            mesh.rotation.y += 0.02;
+            line.rotation.x += 0.02;
+            line.rotation.y += 0.02;
+
+            renderer.render(scene, camera)
+        }
+    </script>
+</body>
+</html>

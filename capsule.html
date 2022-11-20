@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAPSULE</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        canvas {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+    <!-- LIBRARY THREE JS -->
+    <script src="three.js"></script>
+</head>
+<body>
+    <script>
+        // SCENE & BACKGROUND
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x8FBCD4);
+
+        // GEOMETRI
+        const radius = 1; // Radius of the capsule. Optional; defaults to 1.
+        const length = 1; // Length of the middle section. Optional; defaults to 1.
+        const capSegments = 4; // Number of curve segments used to build the caps. Optional; defaults to 4.
+        const radialSegments = 8; // Number of segmented faces around the circumference of the capsule. Optional; defaults to 8.
+        
+        const geometry = new THREE.CapsuleGeometry( radius, length, capSegments, radialSegments );
+        const material = new THREE.MeshBasicMaterial( {color: 0x000000} );
+        const capsule = new THREE.Mesh( geometry, material );
+        scene.add( capsule );
+
+        // WIREFRAME
+        const wireframe = new THREE.WireframeGeometry( geometry );
+        const line = new THREE.LineSegments( wireframe );
+        line.material.depthTest = false;
+        line.material.opacity = 0.25;
+        line.material.transparent = true;
+        scene.add( line );
+        
+        //  CAMERA
+        const fieldOfView = 5; // Camera frustum vertical field of view.
+        const aspectRatio = window.innerWidth / window.innerHeight; // Camera frustum aspect ratio.
+        const nearPlane = 0.1; // Camera frustum near plane.
+        const farPlane = 1000; // Camera frustum far plane.
+        const camera = new THREE.PerspectiveCamera(fieldOfView, aspectRatio, nearPlane, farPlane);
+
+        camera.position.z = 100;
+        camera.position.y = -0.1;
+
+        //  RENDER
+        const renderer = new THREE.WebGLRenderer({
+            antialias: true
+        });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+        requestAnimationFrame(animate);
+
+        function animate() {
+            requestAnimationFrame(animate);
+            capsule.rotation.x += 0.02;
+            capsule.rotation.y += 0.02;
+            line.rotation.x += 0.02;
+            line.rotation.y += 0.02;
+
+            renderer.render(scene, camera)
+        }
+    </script>
+</body>
+</html>
